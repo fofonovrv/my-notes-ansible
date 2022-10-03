@@ -1,0 +1,22 @@
+- name: Test blocks
+  hosts: debian01
+  become: yes
+
+  vars:
+
+  tasks:
+
+  - block:
+    - name: Instal packages
+      apt:
+        pkg:
+          - tree
+          - nmon
+          - htop
+        state: present
+    - name: Create folder
+      file:
+        path: /srv/folder1
+        state: directory
+    
+    when: ansible_hostname == debian01

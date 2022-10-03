@@ -8,7 +8,7 @@
       - wget
       - htop
 
-    nginx_config: ./nginx/nginx.conf
+    nginx_config: ./nginx/nginx.conf.j2
     app_root: ./demo-site
     server_name: "{{ ansible_default_ipv4.address }}"
     document_root: /var/www

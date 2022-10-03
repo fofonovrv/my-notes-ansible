@@ -1,0 +1,14 @@
+---
+# vars file for first_setup
+  packages:
+    - apt-transport-https
+    - bash-copmletion
+    - ca-certificates
+    - curl
+    - dnsutils
+    - ncdu
+    - net-tools
+    - nmon
+    - htop
+    - vim
+  new_hostname: new_serv

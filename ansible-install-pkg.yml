@@ -3,18 +3,22 @@
 
   tasks:
   - name: Установка пакетов на Ubuntu
-    apt: pkg={{ item }} state=latest
-    with_items:
-      - rsync
-      - wget
-      - nano
-      - atop
+    apt: 
+      pkg: "{{ item }}"
+      state: latest
+      with_items:
+        - rsync
+        - wget
+        - nano
+        - htop
     when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
   - name: Установка пакетов на CentOS
-    dnf: pkg={{ item }} state=latest
+    dnf:
+      pkg: "{{ item }}"
+      state: latest
     with_items:
-      - atop
+      - htop
       - bind-utils
       - man
       - mc
@@ -27,7 +31,7 @@
       - pwgen
       - tcpdump
       - wget
-    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux' or ansible_distribution == 'OracleLinux'
 
   - name: Запуск службы и включение на CentOS
     ansible.builtin.systemd: 
@@ -40,8 +44,8 @@
       name: firewalld
       state: stopped
       enabled: no
-                                    
-  - name: Остановка сервиса на Ubuntua
+
+  - name: Остановка сервиса на Ubuntu
     ansible.builtin.service:
-    name: httpd
-    state: stopped
+      name: httpd
+      state: stopped
