@@ -17,9 +17,11 @@
 
 [Рекомендации по Ansible. Habr, 2021](https://habr.com/ru/company/otus/blog/540716/)
 
+[Galaxy Ansible](https://galaxy.ansible.com/)
+
 [Курс в одном видео](https://www.youtube.com/watch?v=YYjCwLs-1hA)
 
-[памятка по MD](https://gist.github.com/Jekins/2bf2d0638163f1294637)
+[Памятка по MD](https://gist.github.com/Jekins/2bf2d0638163f1294637)
 
 ---
 
@@ -308,7 +310,7 @@ ansible host -i hosts -m copy -a "src=sourse_file dest=destination_file mode=600
 ## Шаблоны
 
 В Ansible работает шаблонизатор Jinja, такой же, как в Django.
-Используется для подстановки переменных в файл. 
+Используется для подстановки переменных в файл, формат переменных {{ var01 }}
 
 #### Например, при копировании конфига nginx
 
@@ -363,7 +365,7 @@ server {
 
 Для настройки отдельных ролей серверов, можно разделять задачи для разных ролей по отдельным файлам
 
-Например, роли first_setup, web_server, proxy_server
+Например, роли first_setup, web-server, proxy_server
 
 Создание роли first_setup командой:
 
@@ -382,3 +384,14 @@ ansible-galaxy init first_setup
 + README.md
 
 В каждой папке, кроме files есть main.yml, в него и нужно записывать соответствующие части (tasks, handlers, vars, templates)
+
+Созданные роли можно использовать в любом порядке в других плейбуках:
+
+```
+- name: Fist Install + Web-Server
+  hosts: host01
+  gather_facts: yes
+  roles:
+    - first_setup
+	- web-server
+```
