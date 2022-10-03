@@ -1,0 +1,71 @@
+- name: Deploing nginx server
+  hosts: debian01
+  become: yes
+  vars:
+    def_packages:
+      - sudo
+      - vim
+      - wget
+      - htop
+
+    nginx_config: ./nginx/nginx.conf
+    app_root: ./demo-site
+    server_name: "{{ ansible_default_ipv4.address }}"
+    document_root: /var/www
+
+  handlers:
+    - name: Restart Nginx
+      service:
+        name: nginx
+        state: restarted
+
+  tasks:
+  - name: Install default pkgs
+    apt:
+      pkg: "{{ def_packages }}"
+
+  - name: Enabling UFW, allowing all traffic
+    ufw:
+      state: enabled
+      policy: allow
+
+  - name: Set logging
+    ufw:
+      logging: 'on'
+  
+  - name: Allow all access to ssh
+    ufw:
+      rule: allow
+      port: ssh
+      proto: tcp
+
+  - name: Install nginx pkgs
+    apt:
+      name: nginx
+      state: latest
+      update_cache: yes
+
+  - name: Copy web-site files
+    copy:
+      src: "{{ app_root }}"
+      dest: "{{ document_root }}"
+      mode: preserve
+
+  - name: Apply Nginx template
+    template:
+      src: "{{ nginx_config }}"
+      dest: /etc/nginx/sites-available/default
+    notify: Restart Nginx
+
+  - name: Enable new site
+    file:
+      src: /etc/nginx/sites-available/default
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+    notify: Restart Nginx
+
+  - name: Allow all access to tcp port 80
+    ufw:
+      rule: allow
+      port: '80'
+      proto: tcp
