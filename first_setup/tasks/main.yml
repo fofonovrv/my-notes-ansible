@@ -1,14 +1,17 @@
 ---
   - name: Upgrade all packages to the latest version
+    become: yes
     apt:
       name: "*"
       state: latest
   
   - name: Update all packages to the latest version
+    become: yes
     apt:
       upgrade: dist
   
   - name: Install common packages
+    become: yes
     apt:
       pkg: "{{ packages }}"
       state: present
@@ -17,13 +20,13 @@
     hostname:
       name: "{{ new_hostname }}"
 
-  - name: Copy .bashrc & .vimrc for "{{ ansible_user }}"
-    copy:
-      src: "{{ item }}"
-      dest: "~"
-      owner: root
-      group: root
-      mode: 0644
-    with_items:
-      - .bashrc
-      - .vimrc
+  # - name: Copy .bashrc & .vimrc for "{{ ansible_user }}"
+  #   copy:
+  #     src: "{{ item }}"
+  #     dest: "~"
+  #     owner: root
+  #     group: root
+  #     mode: 0644
+  #   with_items:
+  #     - .bashrc
+  #     - .vimrc

@@ -1,0 +1,5 @@
+- name:   Первичная установка
+  hosts: vps-debian01
+  gather_facts: yes
+  roles:
+    - first_setup

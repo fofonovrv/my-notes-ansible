@@ -2,7 +2,7 @@
 # vars file for first_setup
   packages:
     - apt-transport-https
-    - bash-copmletion
+    # - bash-copmletion
     - ca-certificates
     - curl
     - dnsutils
@@ -11,4 +11,4 @@
     - nmon
     - htop
     - vim
-  new_hostname: new_serv
+  new_hostname: vps-debian01
